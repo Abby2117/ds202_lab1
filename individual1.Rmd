@@ -8,4 +8,111 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-hi
+```{r}
+library(classdata)
+data(choco)
+str(choco) 
+```
+
+
+```{r}
+#1 How are the cocoa percent distributed? Create both a histogram and a boxplot and describe them. Don’t forget to mention outliers, if there are any.
+
+Percent <- choco$CocoaPercent
+boxplot(Percent)
+hist(Percent)
+summary(Percent)
+
+```
+Outliers are everything below 65 and above 80, as we can see on the boxplot. The maximum value is 100 and the minimun value is 42. The median is 70.
+
+
+
+```{r}
+  
+#2 How does the number of ratings depend on the country of bean origin? Draw a bar chart of the number of ratings by bean origin. [Hint: If your graph is too dense and the labels are not legible, show fewer bean origins.]
+
+var <- c(choco$CountryBeanOrigin)
+var <- table(var)
+barplot(var, xlab= 'Country of Origin', ylab = '# of Ratings')
+var_less <- var[1:5]
+barplot(var_less, xlab= 'Country of Origin', ylab = '# of Ratings')
+
+```
+
+
+```{r}
+
+#3 Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain. [Hint: Think about why the scatterplot is not a very good choice for visualization here.]
+
+x<- c(choco$Rating, choco$CocoaPercent)
+summary(choco$CocoaPercent ~ choco$Rating)
+boxplot(choco$CocoaPercent ~ choco$Rating)
+```
+
+
+So, from the graph we can see that in fact, Rating of 1.5 has the largest range of cocoa percentage, while the highest rating of 4.0 has of of the smallest range for cocoa percentage. 
+
+
+```{r}
+#4 How do different bean origins compare in terms of the flavor of chocolates? Are beans from some places better than the other? Create both numerical and graphical summaries, and explain.
+
+y <- table(choco$CountryBeanOrigin)
+s <- table(choco$Characteristics3)
+max(y)
+max(s)
+mean(s)
+flavor <- table(choco$Characteristics3)
+barplot(flavor)
+flavor_sort <- flavor[60:80]
+barplot(flavor_sort)
+
+x <- choco[choco$Characteristics3 == 'cocoa',]
+wow <- x$CountryBeanOrigin
+names(wow) <- x$CountryBeanOrigin
+head(sort(wow, decreasing = TRUE), 10)
+hist(x$Rating [0:10])
+hist(x$Rating)
+x$Rating[0: 10]
+
+```
+The maximum number of chocolate characteristic3 is cocoa at 110.The average number of each characteristic3 is 4.955.
+Venezuela has the most of the same values from characteristic3. In the first 10 values, Venezuela and Vietnam are the two countries of origin for the beans. The first 10 values of the cocoa characteristic3 have the rating between 3.2 and 3.4 or 3.6 and 3.8.
+For the cocoa characteristic3, the histogram shows that some cocoa chocolate are better than others.
+
+
+
+```{r}
+#5 If you work on this lab by yourself, brainstorm two analyses you would like to perform. If you work with a teammate, brainstorm at least three analyses with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
+```
+I would like to compare the difference between the ratings in 2020 and the ratings in 2021. I take the year 2021 and 2020 and then I create a histogram with the year and the rating. From the histogram, we can see that the 2021 histogram is skewed left while the 2020 histogram is more bell shaped. Meaning that in 2021 there was a higher number of 4.0 ratings than in 2020. From the summary we can see that the summaries are equal except for the mean. The mean in 2020 was 3.256 and in 2021 it was 3.32.
+```{r}
+str(choco)
+year2020 <- choco[choco$ReviewDate == '2020',]
+year2021 <- choco[choco$ReviewDate == '2021',]
+length(year2021$Rating)
+hist(year2021$Rating)
+summary(year2020$Rating)
+hist(year2021$Rating)
+summary(year2021$Rating)
+
+```
+I would also like to preform analysis on the company location and cocoa percentage for the year 2020. First I separate all data from the year 2020. Then I set the names of the company location equal to the cocoa percentage. The I sort the data into the lowest cocoa percentage. I found that the USA had the lowest percentage at 65 cocoa percent. The histogram summary shows the minimum cocoa percentage is 65 and the highest is 75. The mean is 70.74.
+
+
+
+```{r}
+dat2020 <- choco[choco$ReviewDate == 2020,]
+percentage <- dat2020$CocoaPercent
+names(percentage) <- dat2020$Location
+sort(percentage)
+lowestpercentage <- head(sort(percentage, decreasing = TRUE))
+names(lowestpercentage)
+
+rank(percentage)['U.S.A.']
+order(percentage)
+percentage[42]
+hist(percentage)
+summary(percentage)
+```
+
